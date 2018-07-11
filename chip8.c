@@ -171,7 +171,7 @@ void chip8_tick() {
 				V[X] += V[Y];
 				break;
 			case 0x5: // 8xy5 - SUB Vx, Vy
-				V[0xF] = V[X] < V[Y];
+				V[0xF] = V[X] > V[Y];
 				V[X] -= V[Y];
 				break;
 			case 0x6: // 8xy6 - SHR Vx {, Vy}
@@ -179,7 +179,7 @@ void chip8_tick() {
 				V[X] /= 2;
 				break;
 			case 0x7: // 8xy7 - SUBN Vx, Vy
-				V[0xF] = V[X] > V[Y];
+				V[0xF] = V[X] < V[Y];
 				V[X] = V[Y] - V[X];
 				break;
 			case 0xE: // 8xyE - SHL Vx {, Vy}
