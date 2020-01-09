@@ -137,6 +137,7 @@ void chip8_tick() {
 		case 0x2: // 2nnn - CALL addr
 			stack[SP++] = PC;
 			PC = NNN - 2;
+			break;
 		case 0x3: // 3xkk - SE Vx, byte
 			if (V[X] == KK) PC += 2;
 			break;
@@ -198,6 +199,7 @@ void chip8_tick() {
 			break;
 		case 0xB: // Bnnn - JP V0, addr
 			PC = NNN + V[0] - 2;
+			break;
 		case 0xC: // Cxkk - RND Vx, byte
 			V[X] = rand() & KK;
 			break;
