@@ -10,6 +10,8 @@
 #define WIN_WIDTH 512
 #define WIN_HEIGHT 256
 
+#define UNUSED(x) (void)(x)
+
 static GtkWidget *drawarea;
 static GdkPixbuf *pixbuf;
 static GtkWidget *playpause;
@@ -17,6 +19,10 @@ char *filename;
 
 static gboolean	on_tick(GtkWidget *widget, GdkFrameClock *frame_clock, gpointer data)
 {
+	UNUSED(widget);
+	UNUSED(frame_clock);
+	UNUSED(data);
+
 	chip8_tick();
 	uint8_t *rawimage = chip8_getframe();
 
@@ -40,6 +46,9 @@ static gboolean	on_tick(GtkWidget *widget, GdkFrameClock *frame_clock, gpointer 
 
 static gint draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 {
+	UNUSED(widget);
+	UNUSED(data);
+
 	GdkPixbuf *scaled = gdk_pixbuf_scale_simple(pixbuf, WIN_WIDTH, WIN_HEIGHT, GDK_INTERP_NEAREST); // TODO: Use OpenGL
 	gdk_cairo_set_source_pixbuf(cr, scaled, 0, 0);
 	cairo_paint(cr);
@@ -50,6 +59,9 @@ static gint draw_callback(GtkWidget *widget, cairo_t *cr, gpointer data)
 
 static void open_callback(GtkApplication* app, GFile *files[], gint n_files, gchar *hint, gpointer user_data)
 {
+	UNUSED(hint);
+	UNUSED(user_data);
+
 	if (n_files != 1) printf("Warning: too many files specified. Ignoring extras.\n");
 	filename = g_file_get_path(files[0]);
 	chip8_loadfile(filename);
@@ -67,6 +79,8 @@ static void update_start_icon() {
 
 static void open_button_callback(GtkButton *button, gpointer user_data)
 {
+	UNUSED(user_data);
+
 	GtkWidget *dialog = gtk_file_chooser_dialog_new(
 		"Open file",
 		GTK_WINDOW (gtk_widget_get_toplevel(GTK_WIDGET (button))),
@@ -88,17 +102,25 @@ static void open_button_callback(GtkButton *button, gpointer user_data)
 
 static void start_button_callback(GtkButton *button, gpointer user_data)
 {
+	UNUSED(button);
+	UNUSED(user_data);
+
 	chip8_playpause();
 	update_start_icon();
 }
 
 static void reset_button_callback(GtkButton *button, gpointer user_data)
 {
+	UNUSED(button);
+	UNUSED(user_data);
+
 	chip8_loadfile(filename);
 }
 
 static void key_callback(GtkWidget *widget, GdkEventKey *event)
 {
+	UNUSED(widget);
+
 	char *keymap = "x123qweasdzc4rfv";
 	if (event -> keyval > 0xFF) return;
 	char *match = strchr(keymap, event -> keyval);
@@ -114,6 +136,8 @@ static void key_callback(GtkWidget *widget, GdkEventKey *event)
 
 static void activate(GtkApplication* app, gpointer user_data)
 {
+	UNUSED(user_data);
+
 	GtkWidget *window;
 	GtkWidget *button;
 	GtkWidget *header;
