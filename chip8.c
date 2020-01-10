@@ -18,9 +18,10 @@
 #define V0 V[0]
 #define Vf V[0xF]
 
-uint8_t *screen, *memory, *V, SP, DT, ST;
-uint16_t *stack, I, PC;
-int running = 0;
+static uint8_t SP, DT, ST, V[0x10], memory[0x1000];
+static uint8_t screen[CHIP8_WIDTH*CHIP8_HEIGHT];
+static uint16_t I, PC, stack[0x100];
+static int running = 0;
 
 uint8_t fontdata[80] = { 
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -43,17 +44,10 @@ uint8_t fontdata[80] = {
 
 void chip8_init()
 {
-	if (memory != NULL) { // free any existing instances
-		free(screen);
-		free(memory);
-		free(stack);
-		free(V);
-	}
-	/* Of course, calloc will never fail. */
-	screen = calloc(CHIP8_WIDTH, CHIP8_HEIGHT);
-	memory = calloc(0x1000, sizeof(uint8_t));
-	stack = calloc(0x100, sizeof(uint16_t));
-	V = calloc(0x10, sizeof(uint8_t));
+	memset(screen, 0, sizeof(screen));
+	memset(memory, 0, sizeof(memory));
+	memset(stack, 0, sizeof(stack));
+	memset(V, 0, sizeof(V));
 	I = 0;
 	PC = 0x200;
 	SP = 0;
