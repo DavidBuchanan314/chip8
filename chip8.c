@@ -241,15 +241,15 @@ void chip8_tick() {
 				ST = Vx;
 				break;
 			case 0x1E: // Fx1E - ADD I, Vx
-				I += Vx;
+				I = (I + Vx) & 0xFFF;
 				break;
 			case 0x29: // Fx29 - LD F, Vx
 				I = Vx * 5;
 				break;
 			case 0x33: // Fx33 - LD B, Vx
-				MEM(I+0) = Vx / 100;
-				MEM(I+1) = (Vx/10) % 10;
-				MEM(I+2) = Vx % 10;
+				MEM(I+0) = (Vx / 100) % 10;
+				MEM(I+1) = (Vx / 10 ) % 10;
+				MEM(I+2) = (Vx / 1  ) % 10;
 				break;
 			case 0x55: // Fx55 - LD [I], Vx
 				for (uint16_t i=0; i <= X; i++) MEM(I+i) = V[i];
@@ -266,6 +266,5 @@ void chip8_tick() {
 		}
 		PC += 2;
 		PC &= 0xFFF;
-		I &= 0xFFF;
 	}
 }
